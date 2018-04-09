@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server.js",
+    "test": "nyc mocha --timeout=3000"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -11,6 +12,26 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
-  }
+    "jimp": "^0.2.28",
+    "jsonpatch": "^3.0.1",
+    "morgan": "~1.9.0",
+    "sharp": "^0.20.1"
+  },
+  "main": "app.js",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "nyc": "^11.6.0",
+    "supertest": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudhap163/SocialCops-Assignment.git"
+  },
+  "author": "Sudha Priyadarshini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudhap163/SocialCops-Assignment/issues"
+  },
+  "homepage": "https://github.com/sudhap163/SocialCops-Assignment#readme",
+  "description": ""
 }
