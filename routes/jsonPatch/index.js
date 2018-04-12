@@ -14,11 +14,14 @@ router.post('/', (req, res, next) => {
     jwt.verify(token, config.secret, function(err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        patchedjson = jsonpatch.apply_patch(req.body.doc, req.body.patch);
-        res.status(200).send({ patchedjson: patchedjson });
-
-    });
-    
+        if (req.body.doc && req.body.patch) {
+            patchedjson = jsonpatch.apply_patch(req.body.doc, req.body.patch);
+            res.status(200).send({ status: 'success', patchedjson: patchedjson });
+        }
+        else {
+            res.status(400).send({status: 'failed', message: 'Document or patch missing.'});
+        }
+    });    
 });
 
 module.exports = router;
