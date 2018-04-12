@@ -1,11 +1,11 @@
-var supertest = require('supertest');
-var chai = require('chai');
+const supertest = require('supertest');
+const chai = require('chai');
 
-var expect = chai.expect;
-var should = chai.should;
-var app = require('./../app');
+const expect = chai.expect;
+const should = chai.should;
+const app = require('./../app');
 
-var request = supertest(app);
+const request = supertest(app);
 
 describe('POST /login', () => {
 
@@ -17,7 +17,7 @@ describe('POST /login', () => {
                 password: "Sudha123"
             })
             .expect(400)
-            .end(function ( err, res) {
+            .end( ( err, res) => {
                 expect(res.body).to.have.property('message');
                 expect(res.body.message).to.eql('Username or password missing');
             });      
@@ -40,11 +40,10 @@ describe('POST /login', () => {
                 "username": "sudha",
                 "password": "sudha123"
             })
-            .end(function ( err, res) {
+            .end(( err, res) => {
                 expect(res.body).to.have.property('auth');
                 expect(res.body.auth).to.eql(true);
                 expect(res.body).to.have.property('token');
-                expect(res.body.token).to.eql('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1ZGhhIiwicGFzc3dvcmQiOiJzdWRoYTEyMyIsImlhdCI6MTUyMzI5NDI4MSwiZXhwIjoxNTIzMzgwNjgxfQ.YL5IspFUrnHmzSzFlnLRIH9MNE_gmMoX8YjWHQX4N1Y');
             });
     });
 });
