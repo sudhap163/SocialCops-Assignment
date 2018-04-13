@@ -1,13 +1,20 @@
 /* Module import */
 const express = require('express');
 const jwt = require('jsonwebtoken');                                     // to tokenize the parameters
-const config = require('../../config');                                  // all environment variables are stored here
+const config = require('../../config/JWTconfig');                        // all environment variables are stored here
 
 const router = express.Router();                                         // Routing object of express module
 router.post('/', (req, res, next) => {
     if (req.body.username && req.body.password) {                        // check if fields are empty
 
-        token = jwt.sign({ username: req.body.username, password: req.body.password }, config.secret, {
+        /**
+         * jwt.sign() method to create jwt token
+         * 
+         * @param {JSON} req.body
+         * @param {string} config.secret
+         */
+        
+        token = jwt.sign( req.body, config.secret, { 
             expiresIn: 86400                                             // expires in 24 hours
         });                                                              // create JSON web token from input fields
 

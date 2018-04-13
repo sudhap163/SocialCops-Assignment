@@ -3,7 +3,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');                               // to tokenize the parameters
 const jsonpatch = require('jsonpatch');                            // to add patch to JSON object
 
-const config = require('../../config');                            // all environment variables are stored here
+const config = require('../../config/JWTconfig');                            // all environment variables are stored here
 
 const router = express.Router();                                   // Routing object of express module
 router.post('/', (req, res, next) => {
@@ -11,14 +11,28 @@ router.post('/', (req, res, next) => {
     const token = req.headers['x-access-token'];                   //to fetch jwt token from http header
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' }); //error handling if no token is present
     
-    /* jwt.verify() method to verify the jwt token */
-    jwt.verify(token, config.secret, function(err, decoded) {
+    /**
+     * jwt.verify() method to verify the jwt token
+     * 
+     * @param {string} token
+     * @param {string} config.secret
+     */
+
+    jwt.verify(token, config.secret, (err, decoded) => {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }); //error handling if token is wrong
 
         if (req.body.doc && req.body.patch) {                       // check if fields are empty
 
             if (JSON.parse(JSON.stringify(req.body.doc)) && Array.isArray(req.body.patch) ) { // check if fields have invalid data
-                patchedjson = jsonpatch.apply_patch(req.body.doc, req.body.patch); // function to apply patch to json
+                
+                /**
+                 * jsonpatch.apply_patch() method to apply patch to json
+                 * 
+                 * @param {JSON} req.body.doc
+                 * @param {Array} req.body.patch
+                 */
+                
+                patchedjson = jsonpatch.apply_patch(req.body.doc, req.body.patch); 
                 res.status(200).send({ status: 'success', patchedjson: patchedjson }); // send success response
             }
             else {

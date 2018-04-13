@@ -4,22 +4,33 @@ const jwt = require('jsonwebtoken');                               //to tokenize
 const jimp = require('jimp');                                      //image processing module
 const path = require('path');                                      // to find path of any file/folder
 const isUrl = require('isurl');                                    // to check if URL
-const config = require('../../config');                            // all environment variables are stored here
+const config = require('../../config/JWTconfig');                  // all environment variables are stored here
 
 const router = express.Router();                                   // Routing object of express module
 router.post('/', (req, res, next) => { 
     const token = req.headers['x-access-token'];                   //to fetch jwt token from http header
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' }); //error handling if no token is present
     
-    /* jwt.verify() method to verify the jwt token */
-    jwt.verify(token, config.secret, function(err, decoded) {
+    /**
+     * jwt.verify() method to verify the jwt token
+     * 
+     * @param {string} token
+     * @param {string} config.secret
+     */
+    
+    jwt.verify(token, config.secret, (err, decoded) => {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }); //error handling if token is wrong
         var imgURL = req.body.imgURL;                                 // save image url from req.body
         if (imgURL) {
 
             if (isUrl(imgURL)) {
                 
-                /* jimp method to resize image from URL */
+                /**
+                 * jimp method to resize image from URL
+                 * 
+                 * @param {string} imgURL.toString()
+                 */
+                
                 jimp.read(imgURL.toString(), (err, img) => {
                     if (err) throw err;
 
